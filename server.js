@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const Client = require('pg').Client;
 
-const hostname = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 
 // Postgres connection details
@@ -36,8 +35,8 @@ const data = {
 // for parsing application/json
 app.use(express.json());
 
-app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(port, () => {
+  console.log(`Server running on PORT ${port}/`);
 });
 
 app.get('/', (req, res) => {
