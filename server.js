@@ -1,13 +1,13 @@
-const http = require('http');
 const express = require('express');
 const app = express();
-const Pool = require('pg').Pool;
+const Client = require('pg').Client;
 
 const hostname = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 
 // Postgres connection details
-const pool = new Pool({
+const client = new Client({
+  connectionString: process.env.DATABASE_URL || null,
   user: process.env.PGUSER || 'postgres',
   host: process.env.PGHOST || '127.0.0.1',
   database: process.env.PGDATABASE || 'postgres',
@@ -16,7 +16,7 @@ const pool = new Pool({
 });
 
 // If the client fails to connect, stop the process
-pool.connect((err, client, release) => {
+client.connect((err) => {
   if (err) {
     console.error('Error acquiring client', err.stack);
     process.exit(-1);
@@ -57,7 +57,7 @@ app.get('/v1/loan/:loan_id', (req, res) => {
   const values = [data.loan_id];
 
   // GET the data from the database
-  pool.query(text, values, (err, pg_res) => {
+  client.query(text, values, (err, pg_res) => {
     if (err) {
       console.log(err.stack);
     } else {
@@ -94,7 +94,7 @@ app.post('/v1/loan', (req, res) => {
   const values = [data.loan_id, data.amount, data.interest_rate, data.months, data.payment];
 
   // POST data to the database
-  pool.query(text, values, (err, pg_res) => {
+  client.query(text, values, (err, pg_res) => {
     if (err) {
       console.log(err.stack);
     } else {
@@ -126,7 +126,7 @@ app.put('/v1/loan/:loan_id', (req, res) => {
   const values = [data.loan_id, data.amount, data.interest_rate, data.months, data.payment];
 
   // PUT data in the database
-  pool.query(text, values, (err, pg_res) => {
+  client.query(text, values, (err, pg_res) => {
     if (err) {
       console.log(err.stack);
     } else {
