@@ -1,4 +1,4 @@
-# Setup
+# Local Setup
 
 Make sure you have the latest version of Node.js and npm installed
 
@@ -6,11 +6,17 @@ Run the following command to install necessary modules:
 
 `npm install`
 
+You will also need to install Postgres and create a new table. The packaged `create-tables.sql` script will create the necessary table(s) with the appropriate schema.
+
 # Run
 
 Run the following command to start the app server:
 
 `npm start`
+
+The packaged `client.js` file is a very simple programmatic client that will run through sample cases of a POST, GET, and PUT method to interact with the table data in a local deployment.
+
+If accessing the API from a public app, it will be better suited to use a 3rd party API platform such as Postman.
 
 # About
 
